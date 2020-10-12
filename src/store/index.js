@@ -45,7 +45,7 @@ export default new Vuex.Store({
   actions: {
     login ({ commit }, userCredentials) {
       // const url = `${process.env.VUE_APP_BACKEND_URL}/auth`
-      const baseUrl = JSON.parse(localStorage.getItem('localHost')) === 'true' ? `${process.env.VUE_APP_LOCAL_BACKEND_URL}` : `${process.env.VUE_APP_BACKEND_URL}`
+      const baseUrl = JSON.parse(localStorage.getItem('localHost')) === true ? `${process.env.VUE_APP_LOCAL_BACKEND_URL}` : `${process.env.VUE_APP_BACKEND_URL}`
       const url = `${baseUrl}/auth`
       console.log(url)
       axios
@@ -74,7 +74,7 @@ export default new Vuex.Store({
       const room = JSON.parse(localStorage.getItem('user')) === 'admin' ? toggleDevice.room : JSON.parse(localStorage.getItem('room'))
       const user = JSON.parse(localStorage.getItem('user'))
       // const url = `${process.env.VUE_APP_BACKEND_URL}/dashboard`
-      const baseUrl = JSON.parse(localStorage.getItem('localHost')) === 'true' ? `${process.env.VUE_APP_LOCAL_BACKEND_URL}` : `${process.env.VUE_APP_BACKEND_URL}`
+      const baseUrl = JSON.parse(localStorage.getItem('localHost')) === true ? `${process.env.VUE_APP_LOCAL_BACKEND_URL}` : `${process.env.VUE_APP_BACKEND_URL}`
       const url = `${baseUrl}/dashboard`
       var action = ''
       if (toggleDevice.status === 'ON') {
