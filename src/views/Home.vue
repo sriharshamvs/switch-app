@@ -4,8 +4,9 @@
       <v-flex xs12 md4>
         <h1 class="text-center">Smart Home Application</h1>
         <div v-if="!auth" class="text-center">
-          <p>Please Signin to access the Dashboard</p>
+          <p>Signin to access the Dashboard</p>
           <Signin />
+          <SetServer />
         </div>
         <div v-else class="text-center">
           <p class="subtitle-1">Click to view the Dashboard</p>
@@ -25,10 +26,13 @@
 
 <script>
 import Signin from '@/components/Signin.vue'
+import SetServer from '@/components/SetServer.vue'
+
 export default {
   name: 'Home',
   components: {
-    Signin
+    Signin,
+    SetServer
   },
   data () {
     return {

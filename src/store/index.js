@@ -10,7 +10,8 @@ export default new Vuex.Store({
     username: null,
     devices: null,
     room: null,
-    users: null
+    users: null,
+    localHost: null
   },
   mutations: {
     setUser (state, username) {
@@ -32,13 +33,20 @@ export default new Vuex.Store({
       state.username = null
       state.devices = null
       localStorage.removeItem('user')
+      localStorage.removeItem('users')
       localStorage.removeItem('devices')
       localStorage.removeItem('room')
+    },
+    setLocalHost (state, data) {
+      state.localHost = data
+      localStorage.setItem('localHost', JSON.stringify(state.localHost))
     }
   },
   actions: {
     login ({ commit }, userCredentials) {
-      const url = `${process.env.VUE_APP_BACKEND_URL}/auth`
+      // const url = `${process.env.VUE_APP_BACKEND_URL}/auth`
+      const baseUrl = JSON.parse(localStorage.getItem('localHost')) === 'true' ? `${process.env.VUE_APP_LOCAL_BACKEND_URL}` : `${process.env.VUE_APP_BACKEND_URL}`
+      const url = `${baseUrl}/auth`
       console.log(url)
       axios
         .post(url, userCredentials)
@@ -65,7 +73,9 @@ export default new Vuex.Store({
     toggle ({ commit }, toggleDevice) {
       const room = JSON.parse(localStorage.getItem('user')) === 'admin' ? toggleDevice.room : JSON.parse(localStorage.getItem('room'))
       const user = JSON.parse(localStorage.getItem('user'))
-      const url = `${process.env.VUE_APP_BACKEND_URL}/dashboard`
+      // const url = `${process.env.VUE_APP_BACKEND_URL}/dashboard`
+      const baseUrl = JSON.parse(localStorage.getItem('localHost')) === 'true' ? `${process.env.VUE_APP_LOCAL_BACKEND_URL}` : `${process.env.VUE_APP_BACKEND_URL}`
+      const url = `${baseUrl}/dashboard`
       var action = ''
       if (toggleDevice.status === 'ON') {
         action = 'OFF'
@@ -89,6 +99,9 @@ export default new Vuex.Store({
         .catch((error) => {
           console.log(error)
         })
+    },
+    localHost ({ commit }, value) {
+      commit('setLocalHost', value)
     },
     clearData ({ commit }) {
       commit('clearAllData')
