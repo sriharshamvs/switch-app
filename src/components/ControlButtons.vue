@@ -1,11 +1,34 @@
 <template>
   <div>
     <v-container fluid>
-      <v-row dense>
-        <div v-if="getUsername=='admin'">
-          <h1>ADMIN PAGE</h1>
-        </div>
-        <div v-else>
+      <div v-if="getUsername=='admin'">
+        <h1>ADMIN</h1>
+        <v-row dense>
+          <div v-for="room in getRooms" :key="room">
+            <h1>{{room}}</h1>
+            <v-col cols="12">
+              <v-row
+                align="center"
+                justify="space-around"
+              >
+                <v-card
+                    v-for="device in getDevicesByRoom(room)"
+                    :key="device.device"
+                    @click="toggleDevice(device, room)"
+                    flat
+                    class="ma-6"
+                  >
+                    <div v-if="device.icon !== '' && device.icon !== undefined">
+                      <DeviceIcon :name="device.icon" :status="device.status" />
+                    </div>
+                </v-card>
+              </v-row>
+            </v-col>
+          </div>
+        </v-row>
+      </div>
+      <div v-else>
+        <v-row dense>
           <v-col cols="12">
             <v-row
               align="center"
@@ -24,18 +47,19 @@
               </v-card>
             </v-row>
           </v-col>
-        </div>
-      </v-row>
+        </v-row>
+      </div>
     </v-container>
   </div>
 </template>
 
 <script>
-// DeviceIcon component is imported in main.js
+// Note:- DeviceIcon component is imported in main.js
 export default {
   name: 'ControlButtons',
   data () {
     return {
+
     }
   },
   computed: {
@@ -48,11 +72,26 @@ export default {
         return data.icon !== ''
       })
       return devices
+    },
+    getRooms () {
+      const totalDevices = this.$store.getters.getDevices
+      const rooms = [...new Set(totalDevices.map(row => row.room))]
+      return rooms
     }
   },
   methods: {
     toggleDevice (device) {
       this.$store.dispatch('toggle', device)
+    },
+    getDevicesByRoom (room) {
+      const totalDevices = this.$store.getters.getDevices
+      const roomDevices = totalDevices.filter((data) => {
+        return data.room === room
+      })
+      const devices = roomDevices.filter((data) => {
+        return data.icon !== ''
+      })
+      return devices
     }
   }
 }

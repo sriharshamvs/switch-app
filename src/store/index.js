@@ -9,7 +9,8 @@ export default new Vuex.Store({
   state: {
     username: null,
     devices: null,
-    room: null
+    room: null,
+    users: null
   },
   mutations: {
     setUser (state, username) {
@@ -22,6 +23,10 @@ export default new Vuex.Store({
     setRoom (state, data) {
       state.room = data
       localStorage.setItem('room', JSON.stringify(state.room))
+    },
+    setAllUsers (state, data) {
+      state.users = data
+      localStorage.setItem('users', JSON.stringify(state.users))
     },
     clearAllData (state) {
       state.username = null
@@ -44,6 +49,9 @@ export default new Vuex.Store({
               'user',
               JSON.stringify(userCredentials.username)
             )
+            if (userCredentials.username === 'admin') {
+              commit('setAllUsers', resData.data.users)
+            }
             commit('setUser', userCredentials.username)
             commit('setDevices', resData.data.devices)
             commit('setRoom', resData.data.room)
@@ -55,7 +63,8 @@ export default new Vuex.Store({
         })
     },
     toggle ({ commit }, toggleDevice) {
-      var room = JSON.parse(localStorage.getItem('room'))
+      const room = JSON.parse(localStorage.getItem('user')) === 'admin' ? toggleDevice.room : JSON.parse(localStorage.getItem('room'))
+      const user = JSON.parse(localStorage.getItem('user'))
       const url = `${process.env.VUE_APP_BACKEND_URL}/dashboard`
       var action = ''
       if (toggleDevice.status === 'ON') {
@@ -64,6 +73,7 @@ export default new Vuex.Store({
         action = 'ON'
       }
       const data = {
+        user: user,
         room: room,
         device: toggleDevice.device,
         action: action

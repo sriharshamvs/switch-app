@@ -3,9 +3,9 @@
     <Header />
     <v-layout justify-center>
       <v-flex xs12 md12>
-        <v-content class="ma-1">
+        <v-main class="ma-1">
           <router-view></router-view>
-        </v-content>
+        </v-main>
       </v-flex>
     </v-layout>
   </v-app>
