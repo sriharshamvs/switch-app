@@ -2,10 +2,10 @@
   <div>
     <v-container fluid>
       <div v-if="getUsername=='admin'">
-        <h1>ADMIN</h1>
+        <!-- <h1 class="text-center">Admin Access</h1> -->
         <v-row dense>
           <div v-for="room in getRooms" :key="room">
-            <h1>{{room}}</h1>
+            <h1 class="text-center">Room {{room}}</h1>
             <v-col cols="12">
               <v-row
                 align="center"
@@ -20,6 +20,7 @@
                   >
                     <div v-if="device.icon !== '' && device.icon !== undefined">
                       <DeviceIcon :name="device.icon" :status="device.status" />
+                      <p class="text-center subtitle-1">{{device.location}}</p>
                     </div>
                 </v-card>
               </v-row>
@@ -43,6 +44,7 @@
               >
                 <div v-if="device.icon !== '' && device.icon !== undefined">
                   <DeviceIcon :name="device.icon" :status="device.status" />
+                  <p class="text-center subtitle-1">{{device.location}}</p>
                 </div>
               </v-card>
             </v-row>
