@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <div v-if="getUsername=='Admin'">
+    <h2>Admin Access</h2>
+    <ControlButtons />
+  </div>
+  <div v-else>
     <h2>{{getUsername}}'s Room</h2>
     <ControlButtons />
   </div>
